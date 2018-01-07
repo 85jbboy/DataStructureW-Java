@@ -67,8 +67,12 @@ public class Code23 {
 				String str = infile.next();
 				
 				String trimmed = trimming(str);
-				if(trimmed != null)
+				if(trimmed != null) {
+					
+					String t = trimmed.toLowerCase();
 					addWord(trimmed);
+				}
+					
 			}
 			infile.close();
 			
