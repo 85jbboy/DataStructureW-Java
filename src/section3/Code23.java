@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
-public class Code22 {
+public class Code23 {
 
 	static String[] words = new String[100000];
 	static int[] count = new int[100000];
@@ -45,7 +45,7 @@ public class Code22 {
 		kb.close();
 	}
 
-	private static void saveAs(String filename) {
+	static void saveAs(String filename) {
 		PrintWriter outFile;
 		try {
 			outFile = new PrintWriter(new FileWriter(filename));
@@ -60,12 +60,15 @@ public class Code22 {
 		}
 	}
 
-	public static void makeIndex(String filename) {
+	static void makeIndex(String filename) {
 		try {
 			Scanner infile = new Scanner(new File(filename));
 			while(infile.hasNext()) {
 				String str = infile.next();
-				addWord(str);
+				
+				String trimmed = trimming(str);
+				if(trimmed != null)
+					addWord(trimmed);
 			}
 			infile.close();
 			
@@ -73,6 +76,22 @@ public class Code22 {
 			System.out.println("No File");
 			return;
 		}
+	}
+
+	static String trimming(String str) {
+		if(str == null || str.length() <= 0) 
+			return null;
+		int i = 0, j = str.length() - 1;
+		while(i < str.length() && !Character.isLetter(str.charAt(i))) {
+			i++;
+		}
+		while(j >= 0 && !Character.isLetter(str.charAt(j))) {
+			j--;
+		}
+		
+		if(i > j) 
+			return null;
+		return str.substring(i, j+1);
 	}
 
 	static void addWord(String str) {
