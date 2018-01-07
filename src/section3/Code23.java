@@ -99,12 +99,18 @@ public class Code23 {
 	}
 
 	static void addWord(String str) {
-		int index = findWord(str); // return -1; if not found.
-		if(index != -1) {          // found. words[index] == str
+		int index = findWord(str); 
+		if(index != -1) {        //exit
 			count[index]++;
-		} else {
-			words[n] = str;
-			count[n] = 1;
+		} else {                 //non-exist
+			int i = n-1;
+			while( i>=0 && words[i].compareToIgnoreCase(str)>0) {
+				words[i+1] = words[i];
+				count[i+1] = count[i];
+				i--;
+			}
+			words[i+1] = str;
+			count[i+1] = 1;
 			n++;
 		}
 	}
