@@ -2,6 +2,9 @@
 package section3;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Scanner;
 
 public class MyCode22 {
@@ -11,11 +14,12 @@ public class MyCode22 {
 
 	static String command = null;
 	static String directObj = null;
-	private static Scanner kb;
+	
 	public static void main(String[] args) {
 		
 		try {
-			kb = new Scanner(System.in);
+			
+			Scanner kb = new Scanner(System.in);
 			while(true) {
 				System.out.print("$ ");
 				command = kb.next(); // 명령어를 인식
@@ -25,38 +29,44 @@ public class MyCode22 {
 					break;
 				} else if(command.equals("find")) {
 					directObj = kb.next();	
-					find(directObj);
+					int wordNum = find(directObj);
+
+					if(wordNum != 0) {
+						System.out.println("The word \""+ directObj + "\" appears " +wordNum+" times.");			
+					} else {
+						System.out.println("The word \""+ directObj + "\" does not appear.");
+					}
+					
+					
 				} else if(command.equals("read")) {
 					directObj = kb.next();	
 					read(directObj);
 				} else if(command.equals("saveas")) {
 					directObj = kb.next();	
-	
+					saveAs(directObj);
 				} else {
 					System.out.println("The command you just input (" + command + ") does not exit");
 				}
 
 			}
+			kb.close();
 			
 		} catch(Exception e) {
 			e.getMessage();
 		}
 	}
 	
-	static public void find(String word) {
+	static public int find(String word) {
 		int wordNum = 0;
 		for(int i=0; i<TotalWordNum; i++) {
 			if(wordList[i].equalsIgnoreCase(word) 
 					|| wordList[i].equalsIgnoreCase(word+",") 
-					|| wordList[i].equalsIgnoreCase(word+".")) {
+					|| wordList[i].equalsIgnoreCase(word+".")
+					|| wordList[i].equalsIgnoreCase(word+"!") ) {
 				wordNum++;
 			}
 		}
-		if(wordNum != 0) {
-			System.out.println("The word \""+ word + "\" appears " +wordNum+" times.");			
-		} else {
-			System.out.println("The word \""+ word + "\" does not appear.");
-		}
+		return wordNum;
 	}
 	
 	static public void read(String directObj) {
@@ -74,7 +84,17 @@ public class MyCode22 {
 		}
 	}
 	
-	static public void saveas() {
+	static public void saveAs(String directObj) {
+		PrintWriter outFile;
+		try {
+			outFile = new PrintWriter(new FileWriter(directObj));
+			for (int i=0; i<TotalWordNum; i++) {
+				outFile.println(wordList[i]+ " " +find(wordList[i]) +"개");
+			}
+			outFile.close();
+		} catch (IOException e) {
+			System.out.println("Fileout failed");
+		}
 		
 		
 	}
