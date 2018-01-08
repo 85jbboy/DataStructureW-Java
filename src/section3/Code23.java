@@ -69,7 +69,6 @@ public class Code23 {
 				String trimmed = trimming(str);
 				if(trimmed != null) {
 					
-					String t = trimmed.toLowerCase();
 					addWord(trimmed);
 				}
 					
