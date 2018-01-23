@@ -1,4 +1,4 @@
-package section3;
+package ch1_section3;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
-public class Code22 {
+public class Code23 {
 
 	static String[] words = new String[100000];
 	static int[] count = new int[100000];
@@ -45,7 +45,7 @@ public class Code22 {
 		kb.close();
 	}
 
-	private static void saveAs(String filename) {
+	static void saveAs(String filename) {
 		PrintWriter outFile;
 		try {
 			outFile = new PrintWriter(new FileWriter(filename));
@@ -60,12 +60,18 @@ public class Code22 {
 		}
 	}
 
-	public static void makeIndex(String filename) {
+	static void makeIndex(String filename) {
 		try {
 			Scanner infile = new Scanner(new File(filename));
 			while(infile.hasNext()) {
 				String str = infile.next();
-				addWord(str);
+				
+				String trimmed = trimming(str);
+				if(trimmed != null) {
+					
+					addWord(trimmed);
+				}
+					
 			}
 			infile.close();
 			
@@ -75,13 +81,35 @@ public class Code22 {
 		}
 	}
 
+	static String trimming(String str) {
+		if(str == null || str.length() <= 0) 
+			return null;
+		int i = 0, j = str.length() - 1;
+		while(i < str.length() && !Character.isLetter(str.charAt(i))) {
+			i++;
+		}
+		while(j >= 0 && !Character.isLetter(str.charAt(j))) {
+			j--;
+		}
+		
+		if(i > j) 
+			return null;
+		return str.substring(i, j+1);
+	}
+
 	static void addWord(String str) {
-		int index = findWord(str); // return -1; if not found.
-		if(index != -1) {          // found. words[index] == str
+		int index = findWord(str); 
+		if(index != -1) {        //exit
 			count[index]++;
-		} else {
-			words[n] = str;
-			count[n] = 1;
+		} else {                 //non-exist
+			int i = n-1;
+			while( i>=0 && words[i].compareToIgnoreCase(str)>0) {
+				words[i+1] = words[i];
+				count[i+1] = count[i];
+				i--;
+			}
+			words[i+1] = str;
+			count[i+1] = 1;
 			n++;
 		}
 	}

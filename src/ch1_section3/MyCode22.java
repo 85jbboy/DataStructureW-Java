@@ -1,5 +1,5 @@
 
-package section3;
+package ch1_section3;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;

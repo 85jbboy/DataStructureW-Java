@@ -1,4 +1,4 @@
-package section3;
+package ch2_section1;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -7,10 +7,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
-public class Code23 {
+public class Code04_ModifiedCode23 {
 
-	static String[] words = new String[100000];
-	static int[] count = new int[100000];
+	
+//	static String[] words = new String[100000];
+//	static int[] count = new int[100000];
+	
+	static Code04_Item[] items = new Code04_Item[1000000];
 	static int n = 0;
 	
 	public static void main(String[] args) {
@@ -28,7 +31,7 @@ public class Code23 {
 				String str = kb.next();
 				int index = findWord(str);
 				if(index > -1) {
-					System.out.println("The word " + words[index] + " appears " + count[index]+ " times");
+					System.out.println("The word " + items[index].word + " appears " + items[index].count+ " times");
 				} else {
 					System.out.println("The word " + str + " does not appears");
 				}
@@ -50,7 +53,7 @@ public class Code23 {
 		try {
 			outFile = new PrintWriter(new FileWriter(filename));
 			for(int i=0; i<n; i++) {
-				outFile.println(words[i] + " " + count[i]);
+				outFile.println(items[i].word + " " + items[i].count);
 			}
 			
 			outFile.close();	
@@ -100,23 +103,23 @@ public class Code23 {
 	static void addWord(String str) {
 		int index = findWord(str); 
 		if(index != -1) {        //exit
-			count[index]++;
-		} else {                 //non-exist
+			items[index].count++;
+		} else {                 //non-exist --> insert
 			int i = n-1;
-			while( i>=0 && words[i].compareToIgnoreCase(str)>0) {
-				words[i+1] = words[i];
-				count[i+1] = count[i];
+			while(i>=0 && items[i].word.compareToIgnoreCase(str)>0) {
+				items[i+1] = items[i];
 				i--;
 			}
-			words[i+1] = str;
-			count[i+1] = 1;
+			items[i+1] = new Code04_Item();
+			items[i+1].word = str;
+			items[i+1].count = 1;
 			n++;
 		}
 	}
 	
 	static int findWord(String str) {
 		for(int i=0; i<n; i++) {
-			if(words[i].equalsIgnoreCase(str)) {
+			if(items[i].word.equalsIgnoreCase(str)) {
 				return i;
 			}
 		}
